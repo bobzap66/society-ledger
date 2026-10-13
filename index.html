@@ -64,9 +64,9 @@
           <label class="field field-wide">Character name<input name="name" required maxlength="80" placeholder="e.g. Character name" /></label>
           <label class="field">Organized Play ID<input name="organizedPlayId" inputmode="numeric" placeholder="Optional" /></label>
           <label class="field">Character number<input name="characterNumber" inputmode="numeric" placeholder="Optional" /></label>
-          <label class="field">Faction<input name="faction" placeholder="e.g. Vigilant Seal" /></label>
+          <label class="field" id="character-faction-field">Faction<input name="faction" placeholder="e.g. Vigilant Seal" /></label>
           <label class="field">Starting XP<input name="xp" type="number" min="0" step="0.1" value="0" /></label>
-          <label class="field">Starting gold (gp)<input name="gp" type="number" min="0" step="0.01" value="0" /></label>
+          <label class="field"><span id="starting-currency-label">Starting gold (gp)</span><input name="gp" type="number" min="0" step="0.01" value="0" /></label>
           <label class="field field-wide">Portrait<input name="portrait" type="file" accept="image/*" capture="user" /></label>
         </div>
         <div class="modal-actions"><button type="button" class="button button-quiet" data-close="character-dialog">Cancel</button><button class="button button-primary" id="character-submit" type="submit">Create character</button></div>
@@ -76,7 +76,7 @@
     <dialog id="chronicle-dialog" class="modal modal-large">
       <form id="chronicle-form" class="modal-card">
         <div class="modal-head">
-          <div><p class="eyebrow">PFS 2E · CHRONICLE INTAKE</p><h2>Record a chronicle</h2></div>
+          <div><p id="chronicle-dialog-eyebrow" class="eyebrow">PFS 2E · CHRONICLE INTAKE</p><h2>Record a chronicle</h2></div>
           <button type="button" class="icon-button" data-close="chronicle-dialog" aria-label="Close">×</button>
         </div>
         <input type="hidden" name="historyEntryId" />
@@ -100,11 +100,11 @@
             <label class="field">Role<select name="role"><option value="player">Player</option><option value="gm">Game Master (GM)</option></select></label>
             <label class="field">Event / GM<input name="event" placeholder="Optional" /></label>
             <label class="field">XP earned<input name="xpEarned" type="number" min="0" step="0.1" value="0" /></label>
-            <label class="field">Gold gained (gp)<input name="gpGained" type="number" step="0.01" value="0" /></label>
-            <label class="field">Gold spent (gp)<input name="gpSpent" type="number" min="0" step="0.01" value="0" /></label>
-            <label class="field">Gold adjustment (gp)<input name="gpAdjustment" type="number" step="0.01" value="0" /></label>
-            <fieldset class="rep-adjustments field-wide"><legend>Faction reputation earned</legend><p class="rep-hint">Choose your primary faction and up to two secondary factions.</p><div class="rep-adjustment-row"><label class="field">Primary faction<select class="rep-faction" name="repFaction1"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount1" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction2"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount2" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction3"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount3" type="number" step="1" value="0" /></label></div></fieldset>
-            <p id="chronicle-system-note" class="form-hint" hidden>Starfinder faction reputation tracking is coming soon. You can record the chronicle and rewards now.</p>
+            <label class="field"><span id="chronicle-gained-label">Gold gained (gp)</span><input name="gpGained" type="number" step="0.01" value="0" /></label>
+            <label class="field"><span id="chronicle-spent-label">Gold spent (gp)</span><input name="gpSpent" type="number" min="0" step="0.01" value="0" /></label>
+            <label class="field"><span id="chronicle-adjustment-label">Gold adjustment (gp)</span><input name="gpAdjustment" type="number" step="0.01" value="0" /></label>
+            <fieldset id="chronicle-reputation-field" class="rep-adjustments field-wide"><legend>Faction reputation earned</legend><p class="rep-hint">Choose your primary faction and up to two secondary factions.</p><div class="rep-adjustment-row"><label class="field">Primary faction<select class="rep-faction" name="repFaction1"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount1" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction2"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount2" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction3"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount3" type="number" step="1" value="0" /></label></div></fieldset>
+            <p id="chronicle-system-note" class="form-hint" hidden>Starfinder Society does not track factions.</p>
             <label class="field field-wide">Rewards, items, or notes<textarea name="notes" rows="3" placeholder="Optional notes from the chronicle"></textarea></label>
             <label class="field field-wide">Boon names from this sheet<textarea name="boons" rows="2" placeholder="One boon per line; you can add its rules and uses after saving"></textarea></label>
           </div>
@@ -137,12 +137,12 @@
         <input type="hidden" name="purchaseId" />
         <div class="form-grid">
           <label class="field field-wide">Item or service<input name="item" required maxlength="120" placeholder="What did you buy?" /></label>
-          <label class="field">Cost (gp)<input name="cost" type="number" min="0" step="0.01" required /></label>
+          <label class="field"><span id="purchase-cost-label">Cost (gp)</span><input name="cost" type="number" min="0" step="0.01" required /></label>
           <label class="field">Purchase date<input name="date" type="date" /></label>
           <label class="field">Where bought<input name="location" maxlength="120" placeholder="e.g. Absalom marketplace" /></label>
           <label class="field">Associated chronicle<select name="chronicleId"><option value="">Between chronicles / unassigned</option></select></label>
           <label class="field field-wide">Notes<input name="notes" maxlength="240" placeholder="Optional" /></label>
-          <label class="field field-wide purchase-itemized"><span><input name="itemized" type="checkbox" /> Count this item within the associated chronicle’s gold spent (don’t deduct twice)</span></label>
+          <label class="field field-wide purchase-itemized"><span><input name="itemized" type="checkbox" /> <span id="purchase-itemized-label">Count this item within the associated chronicle’s gold spent (don’t deduct twice)</span></span></label>
           <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct this cost from current wealth</span></label>
         </div>
         <div class="modal-actions"><button type="button" class="button button-quiet" data-close="purchase-dialog">Cancel</button><button type="submit" class="button button-primary">Save purchase</button></div>
