@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#142923" />
     <meta name="description" content="A private ledger for Pathfinder Society characters, chronicles, rewards, and boons." />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="stylesheet" href="styles.css?v=sf-hidden-1" />
+    <link rel="stylesheet" href="styles.css?v=player-id-1" />
     <title>Society Ledger</title>
   </head>
   <body>
@@ -23,7 +23,7 @@
         </nav>
         <div class="top-actions">
           <span class="local-badge" id="sync-status" aria-live="polite"><i></i> Local only</span>
-          <button class="button button-quiet" id="account-button" type="button">Sign in</button>
+          <button class="button button-quiet" id="organized-play-id-button" type="button">Player ID</button><button class="button button-quiet" id="account-button" type="button">Sign in</button>
           <button class="button button-primary" id="add-character-top">＋ Add character</button>
         </div>
       </header>
@@ -53,6 +53,7 @@
         <div class="modal-actions"><button type="button" class="button button-quiet" data-close="auth-dialog">Cancel</button><button type="submit" class="button button-quiet" value="signIn">Sign in</button><button type="submit" class="button button-primary" value="signUp">Create account</button></div>
       </form>
     </dialog>
+    <dialog id="organized-play-id-dialog" class="modal"><form id="organized-play-id-form" class="modal-card"><div class="modal-head"><div><p class="eyebrow">PLAYER PROFILE</p><h2>Organized Play ID</h2></div><button type="button" class="icon-button" data-close="organized-play-id-dialog" aria-label="Close">×</button></div><p class="auth-note">This ID belongs to you and is shared by all your Pathfinder and Starfinder characters. Each character has its own character number.</p><div class="form-grid"><label class="field field-wide">Organized Play ID<input name="organizedPlayId" inputmode="numeric" maxlength="40" placeholder="Optional" /></label></div><div class="modal-actions"><button type="button" class="button button-quiet" data-close="organized-play-id-dialog">Cancel</button><button type="submit" class="button button-primary">Save ID</button></div></form></dialog>
     <dialog id="character-dialog" class="modal">
       <form id="character-form" class="modal-card">
         <div class="modal-head">
@@ -62,7 +63,6 @@
         <input type="hidden" name="society" value="pathfinder" />
         <div class="form-grid">
           <label class="field field-wide">Character name<input name="name" required maxlength="80" placeholder="e.g. Character name" /></label>
-          <label class="field">Organized Play ID<input name="organizedPlayId" inputmode="numeric" placeholder="Optional" /></label>
           <label class="field">Character number<input name="characterNumber" inputmode="numeric" placeholder="Optional" /></label>
           <label class="field" id="character-faction-field">Faction<input name="faction" placeholder="e.g. Vigilant Seal" /></label>
           <label class="field">Starting XP<input name="xp" type="number" min="0" step="0.1" value="0" /></label>
@@ -151,5 +151,5 @@
     <dialog id="portrait-viewer" class="portrait-viewer" aria-label="Character portrait"><button type="button" id="close-portrait-viewer" class="portrait-viewer-close" aria-label="Close portrait">×</button><img id="portrait-viewer-image" alt=""><p id="portrait-viewer-caption"></p></dialog>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
-  <script type="module" src="app.js?v=sf-hidden-1"></script>
+  <script type="module" src="app.js?v=player-id-1"></script>
 </html>
