@@ -208,3 +208,4 @@ if("serviceWorker" in navigator && location.protocol.startsWith("http")){navigat
 render();
 
 undefined
+function initials(value=""){return String(value||"?").trim().split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0).toUpperCase()).join("")||"?";}
