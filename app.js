@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWith
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCm5U5XyUpROXtB0z69vNlF9ET6qRYMLmak",
+  apiKey: "AIzaSyCdtwKGNH-ZoI3WFx2tzZAMkfCIqljRPso",
   authDomain: "society-ledger-12bce.firebaseapp.com",
   projectId: "society-ledger-12bce",
   storageBucket: "society-ledger-12bce.firebasestorage.app",
