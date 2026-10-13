@@ -8,6 +8,7 @@ const publicFiles = [
   'index.html',
   'styles.css',
   'app.js',
+  'supabase-config.js',
   'manifest.webmanifest',
   'service-worker.js',
 ];
