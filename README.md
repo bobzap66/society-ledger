@@ -1,9 +1,10 @@
 # Society Ledger
 
-A mobile-friendly first workflow for Pathfinder Society (second edition) character records. This prototype saves structured data in browser local storage and attachments in IndexedDB. Starfinder 2e is a later phase.
+A mobile-friendly tracker for Pathfinder Society (second edition), with separate Pathfinder and Starfinder Society character rosters. Structured data saves in browser local storage and attachments in IndexedDB. Pathfinder ledger rules and imports are implemented; Starfinder-specific advancement, faction reputation, and import support remain future work.
 
 ## Current prototype
 
+- Separate Pathfinder Society and Starfinder Society rosters. Existing and imported characters are tagged Pathfinder; new characters are added to the selected society.
 - Character profiles with Organized Play IDs, character numbers, factions, and portraits.
 - PFS chronicle intake for photos and PDFs, with browser OCR/text extraction and an editable confirmation form.
 - Confirmed XP, gold, and faction reputation changes update the character ledger. PFS level is derived from running XP at 12 XP per level.
