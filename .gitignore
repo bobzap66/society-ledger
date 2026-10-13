@@ -1,0 +1,13 @@
+# Personal source data. Never include this file in a Pages deployment.
+/society-ledger-migration.json
+/paizo-pfs2-history.json
+
+# Firebase local configuration and generated files
+/.firebaserc
+/.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# GitHub Pages staging output
+/site/

@@ -1,0 +1,9 @@
+{
+  "name": "Society Ledger",
+  "short_name": "Society Ledger",
+  "description": "A private ledger for Pathfinder Society characters, chronicles, rewards, and boons.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f2eb",
+  "theme_color": "#142923"
+}

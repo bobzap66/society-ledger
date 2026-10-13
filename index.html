@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#142923" />
+    <meta name="description" content="A private ledger for Pathfinder Society characters, chronicles, rewards, and boons." />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Society Ledger</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="Society Ledger home">
+          <span class="brand-mark">S</span>
+          <span><strong>Society Ledger</strong><small>Organized play, in order</small></span>
+        </a>
+        <nav class="top-nav" aria-label="Main navigation">
+          <button class="nav-button active" data-nav="home">Characters</button>
+          <button class="nav-button" data-nav="chronicles">Chronicles</button>
+        </nav>
+        <div class="top-actions">
+          <span class="local-badge" id="sync-status" aria-live="polite"><i></i> Local only</span>
+          <button class="button button-quiet" id="account-button" type="button">Sign in</button>
+          <button class="button button-primary" id="add-character-top">＋ Add character</button>
+        </div>
+      </header>
+      <section id="sync-conflict" class="sync-conflict" hidden aria-live="polite">
+        <div><strong>This device and cloud have different changes.</strong><span>Choose which copy to keep. Choosing one replaces the other copy.</span></div>
+        <button class="button button-quiet" id="use-cloud-data" type="button">Use cloud copy</button>
+        <button class="button button-primary" id="upload-local-data" type="button">Keep this device’s copy</button>
+      </section>
+
+      <main id="app" class="main-content" tabindex="-1"></main>
+
+      <footer class="app-footer">
+        <span>Pathfinder Society · 2nd Edition</span>
+        <span>Progress and rewards are calculated from confirmed entries.</span>
+      </footer>
+    </div>
+
+    <dialog id="auth-dialog" class="modal">
+      <form id="auth-form" class="modal-card">
+        <div class="modal-head"><div><p class="eyebrow">PRIVATE CLOUD SYNC</p><h2>Sign in to Society Ledger</h2></div><button type="button" class="icon-button" data-close="auth-dialog" aria-label="Close">×</button></div>
+        <p class="auth-note">Your ledger data syncs to your private Firebase account. Chronicle scans and portraits remain on this device for now.</p>
+        <div class="form-grid">
+          <label class="field field-wide">Email<input name="email" type="email" autocomplete="username" required /></label>
+          <label class="field field-wide">Password<input name="password" type="password" autocomplete="current-password" minlength="6" required /></label>
+        </div>
+        <p id="auth-error" class="auth-error" role="alert" hidden></p>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="auth-dialog">Cancel</button><button type="submit" class="button button-quiet" value="signIn">Sign in</button><button type="submit" class="button button-primary" value="signUp">Create account</button></div>
+      </form>
+    </dialog>
+    <dialog id="character-dialog" class="modal">
+      <form id="character-form" class="modal-card">
+        <div class="modal-head">
+          <div><p class="eyebrow">NEW RECORD</p><h2>Add a character</h2></div>
+          <button type="button" class="icon-button" data-close="character-dialog" aria-label="Close">×</button>
+        </div>
+        <div class="form-grid">
+          <label class="field field-wide">Character name<input name="name" required maxlength="80" placeholder="e.g. Character name" /></label>
+          <label class="field">Organized Play ID<input name="organizedPlayId" inputmode="numeric" placeholder="Optional" /></label>
+          <label class="field">Character number<input name="characterNumber" inputmode="numeric" placeholder="Optional" /></label>
+          <label class="field">Faction<input name="faction" placeholder="e.g. Vigilant Seal" /></label>
+          <label class="field">Starting XP<input name="xp" type="number" min="0" step="0.1" value="0" /></label>
+          <label class="field">Starting gold (gp)<input name="gp" type="number" min="0" step="0.01" value="0" /></label>
+          <label class="field field-wide">Portrait<input name="portrait" type="file" accept="image/*" capture="user" /></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="character-dialog">Cancel</button><button class="button button-primary" type="submit">Create character</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="chronicle-dialog" class="modal modal-large">
+      <form id="chronicle-form" class="modal-card">
+        <div class="modal-head">
+          <div><p class="eyebrow">PFS 2E · CHRONICLE INTAKE</p><h2>Record a chronicle</h2></div>
+          <button type="button" class="icon-button" data-close="chronicle-dialog" aria-label="Close">×</button>
+        </div>
+        <input type="hidden" name="historyEntryId" />
+        <input type="hidden" name="targetChronicleId" />
+        <input type="hidden" name="editChronicleId" />
+        <label class="upload-zone" for="chronicle-file">
+          <span class="upload-icon">↑</span><strong>Choose a chronicle sheet or take a photo</strong>
+          <span>PDF, JPG, PNG, or HEIC · OCR runs in this browser</span>
+          <input id="chronicle-file" name="file" type="file" accept="application/pdf,image/*" capture="environment" />
+        </label>
+        <div id="scan-status" class="scan-status" aria-live="polite">Upload a sheet to start. You can also enter everything by hand.</div>
+        <section id="chronicle-review" class="review-section" hidden>
+          <div class="section-heading"><div><p class="eyebrow">CHECK BEFORE SAVING</p><h3>Chronicle details</h3></div><span id="scan-kind" class="type-pill">PFS chronicle</span></div>
+          <div class="form-grid">
+            <label class="field">Character<select name="characterId" required></select></label>
+            <label class="field">Sheet type<select name="sheetType"><option value="scenario">Scenario chronicle</option><option value="adventure">Adventure chronicle</option><option value="boon">Boon / access sheet</option></select></label>
+            <label class="field field-wide">Scenario or adventure<input name="title" required placeholder="Title as shown on the sheet" /></label>
+            <label class="field">Scenario code<input name="scenarioCode" placeholder="e.g. 7-06" /></label>
+            <label class="field">Chronicle code<input name="chronicleCode" /></label>
+            <label class="field">Date played<input name="datePlayed" type="date" /></label>
+            <label class="field">Role<select name="role"><option value="player">Player</option><option value="gm">Game Master (GM)</option></select></label>
+            <label class="field">Event / GM<input name="event" placeholder="Optional" /></label>
+            <label class="field">XP earned<input name="xpEarned" type="number" min="0" step="0.1" value="0" /></label>
+            <label class="field">Gold gained (gp)<input name="gpGained" type="number" step="0.01" value="0" /></label>
+            <label class="field">Gold spent (gp)<input name="gpSpent" type="number" min="0" step="0.01" value="0" /></label>
+            <label class="field">Gold adjustment (gp)<input name="gpAdjustment" type="number" step="0.01" value="0" /></label>
+            <fieldset class="rep-adjustments field-wide"><legend>Faction reputation earned</legend><p class="rep-hint">Choose your primary faction and up to two secondary factions.</p><div class="rep-adjustment-row"><label class="field">Primary faction<select class="rep-faction" name="repFaction1"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount1" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction2"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount2" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction3"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount3" type="number" step="1" value="0" /></label></div></fieldset>
+            <label class="field field-wide">Rewards, items, or notes<textarea name="notes" rows="3" placeholder="Optional notes from the chronicle"></textarea></label>
+            <label class="field field-wide">Boon names from this sheet<textarea name="boons" rows="2" placeholder="One boon per line; you can add its rules and uses after saving"></textarea></label>
+          </div>
+          <details class="ocr-details"><summary>Show text recognized from the sheet</summary><pre id="ocr-text"></pre></details>
+          <p class="form-hint">OCR can misread values, especially from photos. Review every field; totals change only after you confirm.</p>
+        </section>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="chronicle-dialog">Cancel</button><button id="save-chronicle" class="button button-primary" type="submit" disabled>Confirm and update character</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="boon-dialog" class="modal">
+      <form id="boon-form" class="modal-card">
+        <div class="modal-head"><div><p class="eyebrow">CHARACTER BENEFIT</p><h2>Add a boon</h2></div><button type="button" class="icon-button" data-close="boon-dialog" aria-label="Close">×</button></div>
+        <input type="hidden" name="characterId" />
+        <div class="form-grid">
+          <label class="field field-wide">Boon name<input name="name" required /></label>
+          <label class="field">Use type<select name="useType"><option value="permanent">Permanent</option><option value="limited">Limited use</option></select></label>
+          <label class="field">Number of uses<input name="uses" type="number" min="1" value="1" /></label>
+          <label class="field field-wide">Reset condition<input name="resetCondition" placeholder="Per adventure, daily, or manual" /></label>
+          <label class="field field-wide">Source chronicle<input name="source" placeholder="Scenario or chronicle code" /></label>
+          <label class="field field-wide">Rules text<textarea name="description" rows="4"></textarea></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="boon-dialog">Cancel</button><button type="submit" class="button button-primary">Add boon</button></div>
+      </form>
+    </dialog>
+    <dialog id="purchase-dialog" class="modal">
+      <form id="purchase-form" class="modal-card">
+        <div class="modal-head"><div><p class="eyebrow">CHARACTER LEDGER</p><h2>Record a purchase</h2></div><button type="button" class="icon-button" data-close="purchase-dialog" aria-label="Close">×</button></div>
+        <input type="hidden" name="characterId" />
+        <input type="hidden" name="purchaseId" />
+        <div class="form-grid">
+          <label class="field field-wide">Item or service<input name="item" required maxlength="120" placeholder="What did you buy?" /></label>
+          <label class="field">Cost (gp)<input name="cost" type="number" min="0" step="0.01" required /></label>
+          <label class="field">Purchase date<input name="date" type="date" /></label>
+          <label class="field">Where bought<input name="location" maxlength="120" placeholder="e.g. Absalom marketplace" /></label>
+          <label class="field">Associated chronicle<select name="chronicleId"><option value="">Between chronicles / unassigned</option></select></label>
+          <label class="field field-wide">Notes<input name="notes" maxlength="240" placeholder="Optional" /></label>
+          <label class="field field-wide purchase-itemized"><span><input name="itemized" type="checkbox" /> Count this item within the associated chronicle’s gold spent (don’t deduct twice)</span></label>
+          <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct this cost from current wealth</span></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="purchase-dialog">Cancel</button><button type="submit" class="button button-primary">Save purchase</button></div>
+      </form>
+    </dialog>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</html>
