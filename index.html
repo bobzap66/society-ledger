@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#142923" />
     <meta name="description" content="A private ledger for Pathfinder Society characters, chronicles, rewards, and boons." />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="stylesheet" href="styles.css?v=player-id-1" />
+    <link rel="stylesheet" href="styles.css?v=chronicle-manual-1" />
     <title>Society Ledger</title>
   </head>
   <body>
@@ -83,8 +83,8 @@
         <input type="hidden" name="targetChronicleId" />
         <input type="hidden" name="editChronicleId" />
         <label class="upload-zone" for="chronicle-file">
-          <span class="upload-icon">↑</span><strong>Choose a chronicle sheet or take a photo</strong>
-          <span>PDF, JPG, PNG, or HEIC · OCR runs in this browser</span>
+          <span class="upload-icon">↑</span><strong>Optional: choose a chronicle sheet or take a photo</strong>
+          <span>PDF, JPG, PNG, or HEIC · OCR can fill the fields below</span>
           <input id="chronicle-file" name="file" type="file" accept="application/pdf,image/*" capture="environment" />
         </label>
         <div id="scan-status" class="scan-status" aria-live="polite">Upload a sheet to start. You can also enter everything by hand.</div>
@@ -111,7 +111,7 @@
           <details class="ocr-details"><summary>Show text recognized from the sheet</summary><pre id="ocr-text"></pre></details>
           <p class="form-hint">OCR can misread values, especially from photos. Review every field; totals change only after you confirm.</p>
         </section>
-        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="chronicle-dialog">Cancel</button><button id="save-chronicle" class="button button-primary" type="submit" disabled>Confirm and update character</button></div>
+        <div class="modal-actions"><button type="button" class="button button-quiet" data-close="chronicle-dialog">Cancel</button><button id="save-chronicle" class="button button-primary" type="submit" disabled>Save chronicle</button></div>
       </form>
     </dialog>
 
@@ -151,5 +151,5 @@
     <dialog id="portrait-viewer" class="portrait-viewer" aria-label="Character portrait"><button type="button" id="close-portrait-viewer" class="portrait-viewer-close" aria-label="Close portrait">×</button><img id="portrait-viewer-image" alt=""><p id="portrait-viewer-caption"></p></dialog>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
-  <script type="module" src="app.js?v=player-id-1"></script>
+  <script type="module" src="app.js?v=chronicle-manual-1"></script>
 </html>
