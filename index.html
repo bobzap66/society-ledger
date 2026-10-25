@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#142923" />
     <meta name="description" content="A private ledger for Pathfinder Society characters, chronicles, rewards, and boons." />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="stylesheet" href="styles.css?v=chronicle-delete-1" />
+    <link rel="stylesheet" href="styles.css?v=chronicle-spend-1" />
     <title>Society Ledger</title>
   </head>
   <body>
@@ -101,7 +101,7 @@
             <label class="field">Event / GM<input name="event" placeholder="Optional" /></label>
             <label class="field">XP earned<input name="xpEarned" type="number" min="0" step="0.1" value="0" /></label>
             <label class="field"><span id="chronicle-gained-label">Gold gained (gp)</span><input name="gpGained" type="number" step="0.01" value="0" /></label>
-            <label class="field"><span id="chronicle-spent-label">Gold spent (gp)</span><input name="gpSpent" type="number" min="0" step="0.01" value="0" /></label>
+            <label class="field"><span id="chronicle-spent-label">Chronicle-reported gold spent (gp)</span><input name="gpSpent" type="number" min="0" step="0.01" value="0" /><small>Linked purchases marked as chronicle spending are added automatically.</small></label>
             <label class="field"><span id="chronicle-adjustment-label">Gold adjustment (gp)</span><input name="gpAdjustment" type="number" step="0.01" value="0" /></label>
             <fieldset id="chronicle-reputation-field" class="rep-adjustments field-wide"><legend>Faction reputation earned</legend><p class="rep-hint">Choose your primary faction and up to two secondary factions.</p><div class="rep-adjustment-row"><label class="field">Primary faction<select class="rep-faction" name="repFaction1"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount1" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction2"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount2" type="number" step="1" value="0" /></label></div><div class="rep-adjustment-row"><label class="field">Secondary faction<select class="rep-faction" name="repFaction3"><option value="">No faction</option><option>Radiant Oath</option><option>Envoy's Alliance</option><option>Grand Archive</option><option>Horizon Hunters</option><option>Verdant Wheel</option><option>Vigilant Seal</option></select></label><label class="field">Reputation change<input name="repAmount3" type="number" step="1" value="0" /></label></div></fieldset>
             <p id="chronicle-system-note" class="form-hint" hidden>Starfinder Society does not track factions.</p>
@@ -142,8 +142,8 @@
           <label class="field">Where bought<input name="location" maxlength="120" placeholder="e.g. Absalom marketplace" /></label>
           <label class="field">Associated chronicle<select name="chronicleId"><option value="">Between chronicles / unassigned</option></select></label>
           <label class="field field-wide">Notes<input name="notes" maxlength="240" placeholder="Optional" /></label>
-          <label class="field field-wide purchase-itemized"><span><input name="itemized" type="checkbox" /> <span id="purchase-itemized-label">Count this item within the associated chronicle’s gold spent (don’t deduct twice)</span></span></label>
-          <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct this cost from current wealth</span></label>
+          <label class="field field-wide purchase-itemized"><span><input name="chronicleSpend" type="checkbox" /> <span id="purchase-itemized-label">Add this purchase to the associated chronicle’s gold spent</span></span></label>
+          <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct separately from current wealth</span></label>
         </div>
         <div class="modal-actions"><button type="button" class="button button-quiet" data-close="purchase-dialog">Cancel</button><button type="submit" class="button button-primary">Save purchase</button></div>
       </form>
@@ -151,5 +151,5 @@
     <dialog id="portrait-viewer" class="portrait-viewer" aria-label="Character portrait"><button type="button" id="close-portrait-viewer" class="portrait-viewer-close" aria-label="Close portrait">×</button><img id="portrait-viewer-image" alt=""><p id="portrait-viewer-caption"></p></dialog>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
-  <script type="module" src="app.js?v=chronicle-delete-1"></script>
+  <script type="module" src="app.js?v=chronicle-spend-1"></script>
 </html>
