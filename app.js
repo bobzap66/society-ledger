@@ -149,7 +149,7 @@ async function renderDetail(characterId){
 
 function deleteChronicle(id){
   const row=state.chronicles.find(item=>item.id===id);if(!row)return;
-  const normalizedTitle=value=>String(value||"").trim().replace(/\\s+/g," ").toLowerCase();
+  const normalizedTitle=value=>String(value||"").trim().replace(/\s+/g," ").toLowerCase();
   const duplicate=state.chronicles.find(item=>item.id!==row.id&&item.characterId===row.characterId&&normalizedTitle(item.title)===normalizedTitle(row.title)&&(!row.datePlayed||!item.datePlayed||item.datePlayed===row.datePlayed));
   const linkedSessions=state.sessionHistory.filter(item=>item.linkedChronicleId===row.id);
   const linkedPurchases=state.purchases.filter(item=>item.chronicleId===row.id);
@@ -159,7 +159,7 @@ function deleteChronicle(id){
   if(linkedPurchases.length-itemizedCount)details.push(`${linkedPurchases.length-itemizedCount} other linked purchase note(s) will be kept and unlinked.`);
   if(linkedSessions.length)details.push(duplicate?"Its Paizo session link(s) will move to the other matching chronicle.":"Its Paizo session link(s) will be cleared, leaving those sessions available to match again.");
   if(row.fileKey)details.push(duplicate&&!duplicate.fileKey?"The scan will be moved to the other matching chronicle.":"The scan will remain in private storage.");
-  if(!window.confirm(details.join("\\n\\n")))return;
+  if(!window.confirm(details.join("\n\n")))return;
   if(duplicate&&row.fileKey&&!duplicate.fileKey){duplicate.fileKey=row.fileKey;duplicate.fileName=row.fileName||"";duplicate.mimeType=row.mimeType||"";}
   for(const session of linkedSessions)session.linkedChronicleId=duplicate?.id||"";
   for(const purchase of linkedPurchases){purchase.chronicleId="";if(purchase.itemized){purchase.itemized=false;purchase.affectsBalance=true;purchase.notes=[purchase.notes,`Retained as a separate purchase after deleting "${row.title||"Untitled chronicle"}".`].filter(Boolean).join(" ");}}
