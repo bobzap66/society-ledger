@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#142923" />
     <meta name="description" content="A private ledger for Pathfinder Society characters, chronicles, rewards, and boons." />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="stylesheet" href="styles.css?v=chronicle-spend-1" />
+    <link rel="stylesheet" href="styles.css?v=chronicle-spend-2" />
     <title>Society Ledger</title>
   </head>
   <body>
@@ -142,8 +142,8 @@
           <label class="field">Where bought<input name="location" maxlength="120" placeholder="e.g. Absalom marketplace" /></label>
           <label class="field">Associated chronicle<select name="chronicleId"><option value="">Between chronicles / unassigned</option></select></label>
           <label class="field field-wide">Notes<input name="notes" maxlength="240" placeholder="Optional" /></label>
-          <label class="field field-wide purchase-itemized"><span><input name="chronicleSpend" type="checkbox" /> <span id="purchase-itemized-label">Add this purchase to the associated chronicle’s gold spent</span></span></label>
-          <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct separately from current wealth</span></label>
+          <p class="field field-wide" id="purchase-spend-hint">When a chronicle is selected, this cost is added to its gold spent automatically.</p>
+          <label class="field field-wide purchase-itemized"><span><input name="affectsBalance" type="checkbox" /> Deduct separately from current wealth (unassigned purchases only)</span></label>
         </div>
         <div class="modal-actions"><button type="button" class="button button-quiet" data-close="purchase-dialog">Cancel</button><button type="submit" class="button button-primary">Save purchase</button></div>
       </form>
@@ -151,5 +151,5 @@
     <dialog id="portrait-viewer" class="portrait-viewer" aria-label="Character portrait"><button type="button" id="close-portrait-viewer" class="portrait-viewer-close" aria-label="Close portrait">×</button><img id="portrait-viewer-image" alt=""><p id="portrait-viewer-caption"></p></dialog>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
-  <script type="module" src="app.js?v=chronicle-spend-1"></script>
+  <script type="module" src="app.js?v=chronicle-spend-2"></script>
 </html>
